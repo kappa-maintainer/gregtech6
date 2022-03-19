@@ -81,6 +81,7 @@ import gregapi.util.OM;
 import gregapi.util.ST;
 import gregapi.util.UT;
 import gregtech.blocks.fluids.BlockOcean;
+import gregtech.blocks.fluids.BlockWaterlike;
 import gregtech.compat.*;
 import gregtech.entities.projectiles.EntityArrow_Material;
 import gregtech.entities.projectiles.EntityArrow_Potion;
@@ -143,6 +144,7 @@ public class GT6_Main extends Abstract_Mod {
 		gt_proxy.mDisableVanillaLakes    = ConfigsGT.GREGTECH.get("general", "DisableVanillaLakes"   , T);
 		mDisableIC2Ores                  = ConfigsGT.GREGTECH.get("general", "DisableIC2Ores"        , T);
 		BlockOcean.SPREAD_TO_AIR         = ConfigsGT.GREGTECH.get("general", "OceanBlocksSpreadToAir", T);
+		BlockWaterlike.VANILLA_FLOW      = ConfigsGT.GREGTECH.get("general", "GTWaterFlowLikeVanilla", F);
 		
 		if (ConfigsGT.GREGTECH.get("general", "IncreaseDungeonLoot", T)) {
 			ChestGenHooks tChest;

@@ -103,24 +103,37 @@ public class BlockOcean extends BlockWaterlike {
 				tHasNoOceanAround = F;
 				if (tHasOceanBiome || WD.meta(aWorld, aX, aY, aZ, tSide) == 0) tOceanCounter++;
 			} else if (tBlock == BlocksGT.River) {
-				tList.add(new ChunkCoordinates(aX+OFFX[tSide], aY+OFFY[tSide], aZ+OFFZ[tSide]));
-				tOceanCounter++;
+				if (BlockWaterlike.VANILLA_FLOW == F || WD.meta(aWorld, aX, aY, aZ, tSide) == 0) {
+					tList.add(new ChunkCoordinates(aX + OFFX[tSide], aY + OFFY[tSide], aZ + OFFZ[tSide]));
+					tOceanCounter++;
+				}
 			} else if (WD.water(tBlock)) {
-				tList.add(new ChunkCoordinates(aX+OFFX[tSide], aY+OFFY[tSide], aZ+OFFZ[tSide]));
-				if (tHasOceanBiome || WD.meta(aWorld, aX, aY, aZ, tSide) == 0) tOceanCounter++;
+				if (BlockWaterlike.VANILLA_FLOW == F || WD.meta(aWorld, aX, aY, aZ, tSide) == 0) {
+					tList.add(new ChunkCoordinates(aX+OFFX[tSide], aY+OFFY[tSide], aZ+OFFZ[tSide]));
+					if (tHasOceanBiome || WD.meta(aWorld, aX, aY, aZ, tSide) == 0) tOceanCounter++;
+				}
 			} else if (tHasOceanBiome && tBlock instanceof BlockWaterlike) {
-				tList.add(new ChunkCoordinates(aX+OFFX[tSide], aY+OFFY[tSide], aZ+OFFZ[tSide]));
-				tOceanCounter++;
+				if (BlockWaterlike.VANILLA_FLOW == F || WD.meta(aWorld, aX, aY, aZ, tSide) == 0) {
+					tList.add(new ChunkCoordinates(aX + OFFX[tSide], aY + OFFY[tSide], aZ + OFFZ[tSide]));
+					tOceanCounter++;
+				}
 			}
 		}
 		
 		tBlock = WD.block(aWorld, aX, aY-1, aZ);
 		if (tBlock == this) {
 			tHasNoOceanAround = F;
-			if (WD.meta(aWorld, aX, aY-1, aZ) == 0) tOceanCounter++;
+			if(BlockWaterlike.VANILLA_FLOW == F)
+				if (WD.meta(aWorld, aX, aY-1, aZ) == 0) tOceanCounter++;
 		} else if (WD.anywater(tBlock)) {
 			tHasNoOceanAround = F;
-			if (aWorld.setBlock(aX, aY-1, aZ, this, 0, WATER_UPDATE_FLAGS)) tOceanCounter++;
+			if (BlockWaterlike.VANILLA_FLOW == F)
+				if (aWorld.setBlock(aX, aY-1, aZ, this, 0, WATER_UPDATE_FLAGS)) tOceanCounter++;
+			else if (WD.meta(aWorld, aX, aY-1, aZ) == 0)
+				aWorld.setBlock(aX, aY-1, aZ, this, 1, WATER_UPDATE_FLAGS);
+
+
+
 		}
 		
 		if (tHasNoOceanAround && WD.block(aWorld, aX, aY+1, aZ) != this) {
@@ -130,7 +143,7 @@ public class BlockOcean extends BlockWaterlike {
 		}
 		
 		if (WD.meta(aWorld, aX, aY, aZ) != 0) {
-			if (tOceanCounter >= 2 || (SPREAD_TO_AIR && tHasOceanBiome) || (aWorld.getBlock(aX, aY+1, aZ) == this && WD.meta(aWorld, aX, aY+1, aZ) == 0)) {
+			if (tOceanCounter >= 2 || (SPREAD_TO_AIR && tHasOceanBiome && BlockWaterlike.VANILLA_FLOW == F) || (aWorld.getBlock(aX, aY+1, aZ) == this && WD.meta(aWorld, aX, aY+1, aZ) == 0 && BlockWaterlike.VANILLA_FLOW == F)) {
 				aWorld.setBlock(aX, aY, aZ, this, 0, WATER_UPDATE_FLAGS);
 			}
 		}
